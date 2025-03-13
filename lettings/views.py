@@ -8,7 +8,7 @@ def index(request):
     """
     lettings_list = Letting.objects.all()
     context = {'lettings_list': lettings_list}
-    return render(request, 'lettings/lettings_index.html', context)
+    return render(request, 'lettings/index.html', context)
 
 
 def letting(request, letting_id):
