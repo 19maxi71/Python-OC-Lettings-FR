@@ -77,3 +77,32 @@ Utilisation de PowerShell, comme ci-dessus sauf :
 
 - Pour activer l'environnement virtuel, `.\venv\Scripts\Activate.ps1`
 - Remplacer `which <my-command>` par `(Get-Command <my-command>).Path`
+
+### Error Tracking Setup
+
+1. Create a Sentry account at https://sentry.io
+2. Create a new project and get your DSN
+3. Add your Sentry DSN to `.env` file
+4. Test the setup:
+   - Set DEBUG=False in .env
+   - Visit: `http://localhost:8000/sentry-debug/`
+   - Check your Sentry dashboard for the error
+
+### Testing
+
+Run the test suite:
+```bash
+python manage.py test
+```
+
+Test specific apps:
+```bash
+python manage.py test lettings
+python manage.py test profiles
+python manage.py test oc_lettings_site
+```
+
+### Error Pages
+Custom error pages are available:
+- 404 Not Found: `/test-404/`
+- 500 Server Error: `/test-500/`
