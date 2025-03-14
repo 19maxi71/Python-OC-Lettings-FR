@@ -1,4 +1,4 @@
-## Résumé
+# Résumé
 
 Site web d'Orange County Lettings
 
@@ -9,7 +9,9 @@ Site web d'Orange County Lettings
 - Compte GitHub avec accès en lecture à ce repository
 - Git CLI
 - SQLite3 CLI
-- Interpréteur Python, version 3.6 ou supérieure
+- Interpréteur Python, version 3.9.x (3.9.0 à 3.9.18)
+
+Note: Des versions plus récentes de Python peuvent causer des incompatibilités avec certains modules.
 
 Dans le reste de la documentation sur le développement local, il est supposé que la commande `python` de votre OS shell exécute l'interpréteur Python ci-dessus (à moins qu'un environnement virtuel ne soit activé).
 
@@ -73,5 +75,5 @@ Dans le reste de la documentation sur le développement local, il est supposé q
 
 Utilisation de PowerShell, comme ci-dessus sauf :
 
-- Pour activer l'environnement virtuel, `.\venv\Scripts\Activate.ps1` 
+- Pour activer l'environnement virtuel, `.\venv\Scripts\Activate.ps1`
 - Remplacer `which <my-command>` par `(Get-Command <my-command>).Path`
