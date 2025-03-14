@@ -106,3 +106,42 @@ python manage.py test oc_lettings_site
 Custom error pages are available:
 - 404 Not Found: `/test-404/`
 - 500 Server Error: `/test-500/`
+
+## Deployment
+
+### Overview
+The application uses a CI/CD pipeline with GitHub Actions that:
+1. Runs tests and linting
+2. Builds and pushes Docker image
+3. Deploys to Render
+
+### Requirements
+- Docker account and CLI
+- Render account
+- Environment variables set in GitHub repository:
+  - DOCKERHUB_USERNAME
+  - DOCKERHUB_TOKEN
+  - RENDER_API_KEY
+  - RENDER_SERVICE_ID
+  - Other Django environment variables
+
+### Deployment Steps
+1. Local Docker Testing:
+```bash
+# Pull and run latest image
+docker pull yourusername/oc-lettings:latest
+docker run -p 8000:8000 yourusername/oc-lettings:latest
+```
+
+2. Automated Deployment:
+- Push to main branch triggers full pipeline
+- Push to other branches only runs tests
+- Monitor deployment status in GitHub Actions
+
+### Environment Variables Required
+```
+DJANGO_SECRET_KEY=your_secret_key
+SENTRY_DSN=your_sentry_dsn
+DEBUG=False
+ALLOWED_HOSTS=your-app.onrender.com,localhost,127.0.0.1
+```

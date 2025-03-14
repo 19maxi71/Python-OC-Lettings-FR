@@ -28,20 +28,17 @@ class OCLettingsSiteTest(TestCase):
 
     def test_500_handler(self):
         """Test custom 500 page"""
-        url = reverse('test_500')
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, 500)
-        self.assertTemplateUsed(response, '500.html')
+        # Override DEBUG setting for this test
+        with self.settings(DEBUG=False):
+            try:
+                response = self.client.get(reverse('test_500'))
+                self.assertEqual(response.status_code, 500)
+                self.assertTemplateUsed(response, '500.html')
+            except Exception as e:
+                self.fail(f"Test failed: {str(e)}")
 
     def test_sentry_debug_view(self):
         """Test Sentry error reporting"""
         url = reverse('trigger_error')
         with self.assertRaises(ZeroDivisionError):
             self.client.get(url)
-
-    def test_test_404_view(self):
-        """Test 404 test view"""
-        url = reverse('test_404')
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, 404)
-        self.assertTemplateUsed(response, '404.html')

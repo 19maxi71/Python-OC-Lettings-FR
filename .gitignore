@@ -4,3 +4,6 @@ venv
 *.log
 .env
 .DS_Store
+.coveragerc
+.coverage
+.coverage_html
