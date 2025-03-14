@@ -2,10 +2,11 @@ from django.test import TestCase
 from django.urls import reverse
 from .models import Address, Letting
 
+
 class LettingTest(TestCase):
     def setUp(self):
         self.address = Address.objects.create(
-            number=1, 
+            number=1,
             street='Test Street',
             city='Test City',
             state='TS',
@@ -29,4 +30,4 @@ class LettingTest(TestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Test Letting')
-        self.assertContains(response, 'Test Street')
+        self.assertContains(response, 'Test Street') 
