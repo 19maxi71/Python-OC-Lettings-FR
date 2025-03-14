@@ -114,3 +114,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / "static",]
+
+# Add these handler configurations
+handler404 = 'oc_lettings_site.views.handler404'
+handler500 = 'oc_lettings_site.views.handler500'
