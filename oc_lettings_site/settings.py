@@ -27,6 +27,8 @@ if '0.0.0.0' not in ALLOWED_HOSTS:
     ALLOWED_HOSTS.append('0.0.0.0')
 
 
+
+
 # Application definition
 
 INSTALLED_APPS = [
