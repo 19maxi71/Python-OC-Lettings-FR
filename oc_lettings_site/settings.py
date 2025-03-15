@@ -19,7 +19,12 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
 
+# Read ALLOWED_HOSTS from environment variable
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
+
+# For Docker, ensure 0.0.0.0 is always included
+if '0.0.0.0' not in ALLOWED_HOSTS:
+    ALLOWED_HOSTS.append('0.0.0.0')
 
 
 # Application definition
