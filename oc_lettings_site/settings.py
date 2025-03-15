@@ -26,9 +26,6 @@ ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(','
 if '0.0.0.0' not in ALLOWED_HOSTS:
     ALLOWED_HOSTS.append('0.0.0.0')
 
-
-
-
 # Application definition
 
 INSTALLED_APPS = [
