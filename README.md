@@ -147,6 +147,7 @@ docker run -p 8000:8000 --env-file .env oc-lettings
 - Push to other branches only runs tests
 - Monitor deployment status in GitHub Actions
 
+
 ### Environment Variables Required
 ```
 DJANGO_SECRET_KEY=your_secret_key
