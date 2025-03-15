@@ -7,3 +7,28 @@ venv
 .coveragerc
 .coverage
 .coverage_html
+
+# Sphinx documentation
+docs/build/
+docs/_build/
+docs/source/_build/
+docs/source/__pycache__/
+
+# Sphinx localization files
+docs/source/locales/
+
+# Python virtual environment
+venv/
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+pip-log.txt
+
+# Environment variables
+.env
+
+# Documentation dependencies cache
+docs/source/_static/generated/
+*.mo

@@ -125,15 +125,24 @@ The application uses a CI/CD pipeline with GitHub Actions that:
   - RENDER_SERVICE_ID
   - Other Django environment variables
 
-### Deployment Steps
-1. Local Docker Testing:
+## Docker Deployment
+
+### Building and Running with Docker
+
+1. Build the Docker image:
 ```bash
-# Pull and run latest image
-docker pull yourusername/oc-lettings:latest
-docker run -p 8000:8000 yourusername/oc-lettings:latest
+docker build -t oc-lettings .
 ```
 
-2. Automated Deployment:
+2. Run the container with environment variables from .env:
+```bash
+docker run -p 8000:8000 --env-file .env oc-lettings
+```
+
+3. Access the application at http://localhost:8000
+
+
+### Automated Deployment:
 - Push to main branch triggers full pipeline
 - Push to other branches only runs tests
 - Monitor deployment status in GitHub Actions
