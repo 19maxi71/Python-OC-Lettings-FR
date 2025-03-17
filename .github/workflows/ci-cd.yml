@@ -65,6 +65,20 @@ jobs:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
     steps:
+      - name: Verify Render Service ID
+        run: |
+          if [ -z "${{ secrets.RENDER_SERVICE_ID }}" ]; then
+            echo "Missing RENDER_SERVICE_ID secret"
+            exit 1
+          fi
+
+      - name: Verify Render API Key
+        run: |
+          if [ -z "${{ secrets.RENDER_API_KEY }}" ]; then
+            echo "Missing RENDER_API_KEY secret"
+            exit 1
+          fi
+
       - name: Deploy to Render
         uses: JorgeLNJunior/render-deploy@v1.4.3
         with:
