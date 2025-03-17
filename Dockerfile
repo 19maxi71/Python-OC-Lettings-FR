@@ -5,7 +5,6 @@ FROM python:3.9-slim
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     DJANGO_SETTINGS_MODULE=oc_lettings_site.settings \
-    DEBUG=False \
     STATIC_ROOT=/app/staticfiles
 
 WORKDIR /app
@@ -31,21 +30,23 @@ COPY . .
 RUN adduser -u 5678 --disabled-password --gecos "" appuser \
     && chown -R appuser:appuser /app
 
+# Collect static files with a temporary key
+RUN DJANGO_SECRET_KEY=temporary_key_for_collectstatic python manage.py collectstatic --noinput
+
+# Build arguments with defaults
+ARG DJANGO_SECRET_KEY=default_build_secret_key_not_for_production
+ARG DEBUG=False
+ARG ALLOWED_HOSTS=localhost,127.0.0.1,0.0.0.0
+
+# Set environment variables from build args
+ENV DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY} \
+    DEBUG=${DEBUG} \
+    ALLOWED_HOSTS=${ALLOWED_HOSTS}
+
 # Switch to non-root user
 USER appuser
 
-# Collect static files with a safe temporary key
-USER root
-RUN DJANGO_SECRET_KEY=temporary_key_for_collectstatic python manage.py collectstatic --noinput
-USER appuser
-
-# Accept build arguments
-ARG DJANGO_SECRET_KEY
-ARG DEBUG
-ENV DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
-ENV DEBUG=${DEBUG}
-
 EXPOSE 8000
 
-# Use environment variable for secret key at runtime
+# Command to start the application
 CMD ["gunicorn", "oc_lettings_site.wsgi:application", "--bind", "0.0.0.0:8000"]
