@@ -23,7 +23,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Create static files directory
 RUN mkdir -p staticfiles
 
-# Copy project files after installing dependencies
+# Copy project files after installing all dependencies
 COPY . .
 
 # Create non-root user
