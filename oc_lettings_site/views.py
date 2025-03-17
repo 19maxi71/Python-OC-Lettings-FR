@@ -55,4 +55,4 @@ def test_500(request):
     View to test 500 template
     """
     logger.info('Testing 500 error page')
-    raise Exception("Testing 500 page")
+    return render(request, '500.html', status=500, context={'error_message': 'Testing 500 page'})
