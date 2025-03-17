@@ -38,8 +38,7 @@ def trigger_error(request):
     Triggers a division by zero error.
     For testing Sentry.
     """
-    division_by_zero = 1 / 0
-    return None
+    return 1 / 0
 
 
 def test_404(request):
