@@ -19,12 +19,16 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
 
-# Read ALLOWED_HOSTS from environment variable
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1', '.onrender.com').split(',')
+# Get allowed hosts from environment variable or use default
+allowed_hosts_str = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1')
+ALLOWED_HOSTS = allowed_hosts_str.split(',')
 
-# For Docker, ensure 0.0.0.0 is always included
+# Always include 0.0.0.0 for Docker
 if '0.0.0.0' not in ALLOWED_HOSTS:
     ALLOWED_HOSTS.append('0.0.0.0')
+
+# Always allow any *.onrender.com domain
+ALLOWED_HOSTS.append('.onrender.com')
 
 # Application definition
 
