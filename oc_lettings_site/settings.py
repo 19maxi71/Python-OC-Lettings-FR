@@ -45,13 +45,13 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Add this line
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'oc_lettings_site.urls'
@@ -129,30 +129,26 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
 
+# Ensure the STATIC_ROOT directory exists
+os.makedirs(STATIC_ROOT, exist_ok=True)
+
 # WhiteNoise configuration
 # Changed from CompressedManifestStaticFilesStorage
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
 # Add these handler configurations
 handler404 = 'oc_lettings_site.views.handler404'
 handler500 = 'oc_lettings_site.views.handler500'
 
 # Sentry Configuration
-sentry_sdk.init(
-    dsn=os.environ.get('SENTRY_Dos.environ.get('SN'),
-    in')tegrations=[
-        Djan
-goIntegration(),
-    ,
-],
-# Set traces_sample_rate to 1.0 to capture 100%
-    # of transactions for performance monitoring.
-    # Set traces_sample_rate to 1.0 to capture 100%
-    # of transactions for performance monitoring.
-    traces_sample_rate=1.0,
-    # Send data like request headers and IP for users
-    send_default_pii=True,
-)
+SENTRY_DSN = os.environ.get('SENTRY_DSN', '')
+if SENTRY_DSN:
+    sentry_sdk.init(
+        dsn=SENTRY_DSN,
+        integrations=[DjangoIntegration()],
+        traces_sample_rate=1.0,
+        send_default_pii=True
+    )
 
 # Logging Configuration
 LOGGING = {

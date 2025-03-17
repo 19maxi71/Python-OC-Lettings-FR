@@ -4,7 +4,7 @@ on:
   push:
     branches: [ main, master, production ]
   pull_request:
-    branches: [ main, master ]
+    branches: [ main, master, production ]
 
 jobs:
   test:
@@ -63,6 +63,8 @@ jobs:
           context: .
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/oc-lettings:latest
+          build-args: |
+            BUILD_SECRET_KEY=${{ secrets.DJANGO_SECRET_KEY }}
 
   deploy:
     needs: build-and-push
