@@ -39,6 +39,10 @@ USER root
 RUN DJANGO_SECRET_KEY=temporary_key_for_collectstatic python manage.py collectstatic --noinput
 USER appuser
 
+# Accept build arguments
+ARG DJANGO_SECRET_KEY
+ENV DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
+
 EXPOSE 8000
 
 # Use environment variable for secret key at runtime
