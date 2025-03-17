@@ -66,15 +66,25 @@ jobs:
           build-args: |
             BUILD_SECRET_KEY=${{ secrets.DJANGO_SECRET_KEY }}
 
+  # deploy:
+  #   needs: build-and-push
+  #   if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' || github.ref == 'refs/heads/production'
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Deploy to Render
+  #       env:
+  #         RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+  #       run: |
+  #         curl -X POST "https://api.render.com/v1/services/${{ secrets.RENDER_SERVICE_ID }}/deploys" \
+  #         -H "accept: application/json" \
+  #         -H "authorization: Bearer ${{ secrets.RENDER_API_KEY }}"
   deploy:
     needs: build-and-push
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' || github.ref == 'refs/heads/production'
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy to Render
-        env:
-          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
-        run: |
-          curl -X POST "https://api.render.com/v1/services/${{ secrets.RENDER_SERVICE_ID }}/deploys" \
-          -H "accept: application/json" \
-          -H "authorization: Bearer ${{ secrets.RENDER_API_KEY }}"
+      - uses: actions/checkout@v3
+      - name: Render Deploy
+        uses: render-actions/deploy@v1
+        with:
+          service-id: ${{ secrets.RENDER_SERVICE_ID }}
+          api-key: ${{ secrets.RENDER_API_KEY }}
