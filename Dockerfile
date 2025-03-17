@@ -1,45 +1,31 @@
-# For more information, please refer to https://aka.ms/vscode-docker-python
-FROM python:3.9-slim
-
-# Set non-sensitive environment variables
-ENV PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONUNBUFFERED=1 \
-    DJANGO_SETTINGS_MODULE=oc_lettings_site.settings \
-    DEBUG=False \
-    STATIC_ROOT=/app/staticfiles
+# Étape de construction
+FROM python:3.9-slim as builder
 
 WORKDIR /app
-
-# Install system dependencies
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends \
-        gcc \
-        python3-dev \
-    && rm -rf /var/lib/apt/lists/*
-
-# Copy requirements first and install dependencies
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --user --no-cache-dir -r requirements.txt
 
-# Create static files directory
-RUN mkdir -p staticfiles
+# Étape finale
+FROM python:3.9-slim
+WORKDIR /app
 
-# Copy project files after installing dependencies
+# Copier les dépendances installées
+COPY --from=builder /root/.local /root/.local
+ENV PATH=/root/.local/bin:$PATH
+
+# Copier le projet
 COPY . .
 
-# Create non-root user
-RUN adduser -u 5678 --disabled-password --gecos "" appuser \
-    && chown -R appuser:appuser /app
+# Variables d'environnement
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONDONTWRITEBYTECODE=1
 
-# Switch to non-root user
-USER appuser
+# Configuration statique
+RUN mkdir -p staticfiles
+RUN python manage.py collectstatic --noinput --settings=oc_lettings_site.settings.prod
 
-# Collect static files with a safe temporary key
-USER root
-RUN DJANGO_SECRET_KEY=temporary_key_for_collectstatic python manage.py collectstatic --noinput
-USER appuser
-
+# Port d'exposition
 EXPOSE 8000
 
-# Use environment variable for secret key at runtime
-CMD ["gunicorn", "oc_lettings_site.wsgi:application", "--bind", "0.0.0.0:8000"]
+# Commande de démarrage
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "oc_lettings_site.wsgi:application"]
