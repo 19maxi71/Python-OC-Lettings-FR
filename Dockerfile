@@ -21,8 +21,7 @@ ENV PYTHONUNBUFFERED=1
 ENV PYTHONDONTWRITEBYTECODE=1
 
 # Configuration statique
-RUN mkdir -p staticfiles
-RUN python manage.py collectstatic --noinput --settings=oc_lettings_site.settings.prod
+RUN python manage.py collectstatic --noinput
 
 # Port d'exposition
 EXPOSE 8000
