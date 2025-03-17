@@ -62,15 +62,7 @@ jobs:
         with:
           context: .
           push: true
-          build-args: |
-            DJANGO_SECRET_KEY=${{ secrets.DJANGO_SECRET_KEY }}
-          tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/oc-lettings:latest
-            ${{ secrets.DOCKERHUB_USERNAME }}/oc-lettings:${{ github.sha }}
-          # Add cache-from for better performance
-          cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/oc-lettings:latest
-          # Add output for better logging
-          outputs: type=docker,dest=./image.tar
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/oc-lettings:latest
 
   deploy:
     needs: build-and-push

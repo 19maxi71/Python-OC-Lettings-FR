@@ -14,14 +14,13 @@ load_dotenv(BASE_DIR / '.env')
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'default_dev_key')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
 # Get allowed hosts from environment variable or use default
-allowed_hosts_str = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1')
-ALLOWED_HOSTS = allowed_hosts_str.split(',')
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
 
 # Always include 0.0.0.0 for Docker
 if '0.0.0.0' not in ALLOWED_HOSTS:
@@ -132,7 +131,7 @@ STATICFILES_DIRS = [
 
 # WhiteNoise configuration
 # Changed from CompressedManifestStaticFilesStorage
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Add these handler configurations
 handler404 = 'oc_lettings_site.views.handler404'
@@ -140,10 +139,14 @@ handler500 = 'oc_lettings_site.views.handler500'
 
 # Sentry Configuration
 sentry_sdk.init(
-    dsn=os.environ.get('SENTRY_DSN'),
-    integrations=[
-        DjangoIntegration(),
-    ],
+    dsn=os.environ.get('SENTRY_Dos.environ.get('SN'),
+    in')tegrations=[
+        Djan
+goIntegration(),
+    ,
+],
+# Set traces_sample_rate to 1.0 to capture 100%
+    # of transactions for performance monitoring.
     # Set traces_sample_rate to 1.0 to capture 100%
     # of transactions for performance monitoring.
     traces_sample_rate=1.0,
