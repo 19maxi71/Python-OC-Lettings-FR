@@ -28,12 +28,11 @@ class OCLettingsSiteTest(TestCase):
 
     def test_500_handler(self):
         """Test custom 500 page"""
-        try:
-            response = self.client.get(reverse('test_500'))
-            self.assertEqual(response.status_code, 500)
-            self.assertContains(response, "Testing 500 page")
-        except Exception as e:
-            self.fail(f"Test failed: {str(e)}")
+        response = self.client.get(reverse('test_500'))
+        self.assertEqual(response.status_code, 500)
+        self.assertContains(response, "500", status_code=500)
+        self.assertIn(b"500", response.content)
+        self.assertIn(b"Server Error", response.content)
 
     def test_sentry_debug_view(self):
         """Test Sentry error reporting"""
