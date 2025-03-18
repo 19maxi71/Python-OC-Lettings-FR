@@ -1,35 +1,17 @@
-# Build stage
-FROM python:3.9-slim as builder
-
-WORKDIR /app
-COPY requirements.txt .
-RUN pip install --user --no-cache-dir -r requirements.txt
-
-# Final stage
-FROM python:3.9-slim
+FROM python:3.11.4-slim-bullseye
 WORKDIR /app
 
-COPY --from=builder /root/.local /root/.local
-ENV PATH=/root/.local/bin:$PATH
+ENV PYTHONUNBUFFERED 1
+ENV PYTHONDONTWRITEBYTECODE 1
 
-COPY . .
+# install system dependencies
+RUN apt-get update
 
-# Environment variables with defaults that can be overridden at build time
-ARG DJANGO_SECRET_KEY
-ARG SENTRY_DSN
-ENV DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
-ENV SENTRY_DSN=${SENTRY_DSN}
-ENV PYTHONUNBUFFERED=1
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV DEBUG=False
+# install dependencies
+RUN pip install --upgrade pip
+COPY ./requirements.txt /app/
+RUN pip install -r requirements.txt
 
-RUN mkdir -p staticfiles
-RUN python manage.py collectstatic --noinput
+COPY . /app
 
-EXPOSE 8000
-
-# Health check to ensure the container is running properly
-HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
-  CMD curl -f http://localhost:8000/ || exit 1
-
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "oc_lettings_site.wsgi:application"]
+ENTRYPOINT [ "gunicorn", "core.wsgi", "-b", "0.0.0.0:8000"]
