@@ -14,7 +14,7 @@ ENV PATH=/root/.local/bin:$PATH
 
 COPY . .
 
-# Environment variables with defaults that can be overridden
+# Environment variables with defaults that can be overridden at build time
 ARG DJANGO_SECRET_KEY
 ARG SENTRY_DSN
 ENV DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
