@@ -1,47 +1,61 @@
-# Résumé
+# OC Lettings
 
-Site web d'Orange County Lettings
+Orange County Lettings website - A Django property rental application.
 
-## Développement local
+## Useful Links
 
-### Prérequis
+- [Deployed Application](https://python-oc-lettings-fr-92uw.onrender.com/)
+- [Documentation](https://19maxi71python-oc-lettings-fr.readthedocs.io/en/latest/)
+- [Docker Hub](https://hub.docker.com/r/19maxi71/oc-lettings)
+- [CI/CD Pipeline](https://github.com/19maxi71/Python-OC-Lettings-FR/actions)
 
-- Compte GitHub avec accès en lecture à ce repository
+## Project Structure
+
+The project is divided into three Django applications:
+- **oc_lettings_site**: Main application and configuration
+- **lettings**: Property and address management
+- **profiles**: User profile management
+
+## Local Development
+
+### Prerequisites
+
+- GitHub account with read access to this repository
 - Git CLI
 - SQLite3 CLI
-- Interpréteur Python, version 3.9.x (3.9.0 à 3.9.18)
+- Python interpreter, version 3.9.x (3.9.0 to 3.9.18)
 
-Note: Des versions plus récentes de Python peuvent causer des incompatibilités avec certains modules.
+Note: More recent versions of Python might cause incompatibilities with some modules.
 
-Dans le reste de la documentation sur le développement local, il est supposé que la commande `python` de votre OS shell exécute l'interpréteur Python ci-dessus (à moins qu'un environnement virtuel ne soit activé).
+In the rest of the local development documentation, it is assumed that the `python` command in your OS shell runs the above Python interpreter (unless a virtual environment is activated).
 
 ### macOS / Linux
 
-#### Cloner le repository
+#### Clone the repository
 
 - `cd /path/to/put/project/in`
 - `git clone https://github.com/OpenClassrooms-Student-Center/Python-OC-Lettings-FR.git`
 
-#### Créer l'environnement virtuel
+#### Create the virtual environment
 
 - `cd /path/to/Python-OC-Lettings-FR`
 - `python -m venv venv`
-- `apt-get install python3-venv` (Si l'étape précédente comporte des erreurs avec un paquet non trouvé sur Ubuntu)
-- Activer l'environnement `source venv/bin/activate`
-- Confirmer que la commande `python` exécute l'interpréteur Python dans l'environnement virtuel
+- `apt-get install python3-venv` (If the previous step gives errors with package not found on Ubuntu)
+- Activate the environment `source venv/bin/activate`
+- Confirm that the `python` command runs the Python interpreter in the virtual environment
 `which python`
-- Confirmer que la version de l'interpréteur Python est la version 3.6 ou supérieure `python --version`
-- Confirmer que la commande `pip` exécute l'exécutable pip dans l'environnement virtuel, `which pip`
-- Pour désactiver l'environnement, `deactivate`
+- Confirm that the Python interpreter version is 3.9.x `python --version`
+- Confirm that the `pip` command runs the pip executable in the virtual environment, `which pip`
+- To deactivate the environment, `deactivate`
 
-#### Exécuter le site
+#### Run the site
 
 - `cd /path/to/Python-OC-Lettings-FR`
 - `source venv/bin/activate`
 - `pip install --requirement requirements.txt`
 - `python manage.py runserver`
-- Aller sur `http://localhost:8000` dans un navigateur.
-- Confirmer que le site fonctionne et qu'il est possible de naviguer (vous devriez voir plusieurs profils et locations).
+- Go to `http://localhost:8000` in a browser.
+- Confirm the site works and you can navigate (you should see several profiles and lettings).
 
 #### Linting
 
@@ -49,34 +63,34 @@ Dans le reste de la documentation sur le développement local, il est supposé q
 - `source venv/bin/activate`
 - `flake8`
 
-#### Tests unitaires
+#### Unit Tests
 
 - `cd /path/to/Python-OC-Lettings-FR`
 - `source venv/bin/activate`
 - `pytest`
 
-#### Base de données
+#### Database
 
 - `cd /path/to/Python-OC-Lettings-FR`
-- Ouvrir une session shell `sqlite3`
-- Se connecter à la base de données `.open oc-lettings-site.sqlite3`
-- Afficher les tables dans la base de données `.tables`
-- Afficher les colonnes dans le tableau des profils, `pragma table_info(Python-OC-Lettings-FR_profile);`
-- Lancer une requête sur la table des profils, `select user_id, favorite_city from
+- Open a SQLite shell session `sqlite3`
+- Connect to the database `.open oc-lettings-site.sqlite3`
+- Display tables in the database `.tables`
+- Display columns in the profile table, `pragma table_info(Python-OC-Lettings-FR_profile);`
+- Run a query on the profile table, `select user_id, favorite_city from
   Python-OC-Lettings-FR_profile where favorite_city like 'B%';`
-- `.quit` pour quitter
+- `.quit` to quit
 
-#### Panel d'administration
+#### Admin Panel
 
-- Aller sur `http://localhost:8000/admin`
-- Connectez-vous avec l'utilisateur `admin`, mot de passe `Abc1234!`
+- Go to `http://localhost:8000/admin`
+- Log in with user `admin`, password `Abc1234!`
 
 ### Windows
 
-Utilisation de PowerShell, comme ci-dessus sauf :
+Using PowerShell, as above except:
 
-- Pour activer l'environnement virtuel, `.\venv\Scripts\Activate.ps1`
-- Remplacer `which <my-command>` par `(Get-Command <my-command>).Path`
+- To activate the virtual environment, `.\venv\Scripts\Activate.ps1`
+- Replace `which <my-command>` with `(Get-Command <my-command>).Path`
 
 ### Error Tracking Setup
 
@@ -141,16 +155,36 @@ docker run -p 8000:8000 --env-file .env oc-lettings
 
 3. Access the application at http://localhost:8000
 
+### Pull from Docker Hub
+
+You can also pull the pre-built image directly:
+```bash
+docker pull 19maxi71/oc-lettings:latest
+docker run -p 8000:8000 --env-file .env 19maxi71/oc-lettings:latest
+```
 
 ### Automated Deployment:
 - Push to main branch triggers full pipeline
 - Push to other branches only runs tests
 - Monitor deployment status in GitHub Actions
+This pipeline runs automatically on every push to the main branch.
 
 ### Environment Variables Required
 ```
 DJANGO_SECRET_KEY=your_secret_key
 SENTRY_DSN=your_sentry_dsn
 DEBUG=False
-ALLOWED_HOSTS=your-app.onrender.com,localhost,127.0.0.1
+ALLOWED_HOSTS=python-oc-lettings-fr-92uw.onrender.com,localhost,127.0.0.1
 ```
+
+## Documentation
+
+Complete project documentation is available on [Read the Docs.](https://19maxi71python-oc-lettings-fr.readthedocs.io/en/latest/)
+
+To generate documentation locally:
+```bash
+cd docs
+pip install -r requirements.txt
+sphinx-build -b html source build
+```
+Then open docs/build/index.html in your browser.

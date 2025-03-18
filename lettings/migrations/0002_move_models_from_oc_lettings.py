@@ -7,10 +7,10 @@ def move_lettings_data(apps, schema_editor):
     NewAddress = apps.get_model('lettings', 'Address')
     OldLetting = apps.get_model('oc_lettings_site', 'Letting')
     NewLetting = apps.get_model('lettings', 'Letting')
-    
+
     # Mapping to keep track of old address IDs to new address objects
     address_map = {}
-    
+
     # Move addresses first
     for old_address in OldAddress.objects.all():
         new_address = NewAddress.objects.create(
@@ -22,7 +22,7 @@ def move_lettings_data(apps, schema_editor):
             country_iso_code=old_address.country_iso_code
         )
         address_map[old_address.id] = new_address
-    
+
     # Now move lettings
     for old_letting in OldLetting.objects.all():
         NewLetting.objects.create(
@@ -33,8 +33,8 @@ def move_lettings_data(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('lettings', '0001_initial'),  # Make sure this refers to your initial migration
-        ('oc_lettings_site', '0001_initial'),  # Check the right migration number
+        ('lettings', '0001_initial'),
+        ('oc_lettings_site', '0001_initial'), 
     ]
 
     operations = [

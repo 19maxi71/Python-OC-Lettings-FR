@@ -5,7 +5,7 @@ from django.db import migrations
 def move_profiles_data(apps, schema_editor):
     OldProfile = apps.get_model('oc_lettings_site', 'Profile')
     NewProfile = apps.get_model('profiles', 'Profile')
-    
+
     # Create mapping of old to new profiles
     for old_profile in OldProfile.objects.all():
         NewProfile.objects.create(
@@ -16,8 +16,8 @@ def move_profiles_data(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('profiles', '0001_initial'),  # Make sure this refers to your initial migration
-        ('oc_lettings_site', '0001_initial'),  # Check the right migration number
+        ('profiles', '0001_initial'),
+        ('oc_lettings_site', '0001_initial'),
     ]
 
     operations = [
